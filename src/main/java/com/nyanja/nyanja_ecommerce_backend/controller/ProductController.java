@@ -88,7 +88,7 @@ public class ProductController {
         }
     }
 
-    // Delete product (Admin)
+    // Delete product(Admin)
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         try {
