@@ -19,7 +19,7 @@ public class ProductController {
     }
 
     // Get all products
-    @GetMapping
+    @GetMapping("/allProducts")
     public ResponseEntity<?> getAllProducts() {
         try {
             //List<Product> products = productService.getAllProducts();
@@ -31,7 +31,7 @@ public class ProductController {
          }
 
     // Get product by ID
-    @GetMapping("/{productId}")
+    @GetMapping("/getProduct/{productId}")
     public ResponseEntity<?> getProductById(@PathVariable Long productId) {
         try {
             Product product = productService.getProductById(productId);
@@ -47,7 +47,7 @@ public class ProductController {
          }
 
     // Add new product (Admin)
-    @PostMapping
+    @PostMapping("/newProduct")
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         try {
             Product savedProduct = productService.createProduct(product);
@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     // Update product (Admin)
-    @PutMapping("/{productId}")
+    @PutMapping("/editProduct/{productId}")
     public ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
         try {
             Product existingProduct = productService.getProductById(productId);
@@ -89,7 +89,7 @@ public class ProductController {
     }
 
     // Delete product(Admin)
-    @DeleteMapping("/{productId}")
+    @DeleteMapping("deleteProduct/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         try {
             productService.deleteProduct(productId);

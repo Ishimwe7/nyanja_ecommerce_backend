@@ -4,7 +4,7 @@ import com.nyanja.nyanja_ecommerce_backend.model.User;
 import com.nyanja.nyanja_ecommerce_backend.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,9 +26,9 @@ public class UserController {
             if (userService.emailExists(user.getEmail()) != null) {
                 return ResponseEntity.badRequest().body("Email already Registered !");
             }
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String hashedPassword = encoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
+//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//            String hashedPassword = encoder.encode(user.getPassword());
+//            user.setPassword(hashedPassword);
             User savedUser = userService.createUser(user);
             if (savedUser != null) {
                 return ResponseEntity.ok("Registration done Successfully!");
@@ -42,16 +42,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<?> loginUser(@RequestBody User logUser) {
         try {
-            User user = userService.emailExists(email);
+            User user = userService.emailExists(logUser.getEmail());
             if (user == null) {
                 return ResponseEntity.badRequest().body("User not found");
             }
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            if (!encoder.matches(password, user.getPassword())) {
-                return ResponseEntity.badRequest().body("Invalid password");
-            }
+//            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//            if (!encoder.matches(password, user.getPassword())) {
+//                return ResponseEntity.badRequest().body("Invalid password");
+//            }
             return ResponseEntity.ok("Login successful!");
         } catch (Exception e) {
             e.printStackTrace();
