@@ -12,6 +12,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     private String password;
+    @Transient
+    private String confirmPass;
 
     public User() {
     }
@@ -29,12 +31,13 @@ public class User {
         this.password = password;
     }
 
-    public User(long id, String names, String email, UserStatus status, String password) {
+    public User(long id, String names, String email, UserStatus status, String password, String confirmPass) {
         this.id = id;
         this.names = names;
         this.email = email;
         this.status = status;
         this.password = password;
+        this.confirmPass=confirmPass;
     }
 
     public long getId() {
@@ -75,5 +78,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPass() {
+        return confirmPass;
+    }
+
+    public void setConfirmPass(String confirmPass) {
+        this.confirmPass = confirmPass;
     }
 }

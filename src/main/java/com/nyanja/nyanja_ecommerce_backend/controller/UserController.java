@@ -18,9 +18,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> saveUser(@RequestBody User user, @RequestParam String confirmPass) {
+    public ResponseEntity<?> saveUser(@RequestBody User user) {
         try {
-            if (!user.getPassword().equals(confirmPass)) {
+            if (!user.getPassword().equals(user.getConfirmPass())) {
                 return ResponseEntity.badRequest().body("Password Mismatches !");
             }
             if (userService.emailExists(user.getEmail()) != null) {
@@ -52,10 +52,13 @@ public class UserController {
 //            if (!encoder.matches(password, user.getPassword())) {
 //                return ResponseEntity.badRequest().body("Invalid password");
 //            }
-            return ResponseEntity.ok("Login successful!");
+            if(user.getPassword().equals(logUser.getPassword())){
+                return ResponseEntity.ok("Login successful!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server error!");
         }
+        return ResponseEntity.badRequest().body("Invalid Credentials !");
     }
 }

@@ -4,7 +4,11 @@ import com.nyanja.nyanja_ecommerce_backend.model.Product;
 import com.nyanja.nyanja_ecommerce_backend.services.ProductService;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api/products")
 public class ProductController {
 
+    private static final String UPLOAD_DIR = "./images/";
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -48,10 +53,28 @@ public class ProductController {
 
     // Add new product (Admin)
     @PostMapping("/newProduct")
-    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+    public ResponseEntity<?> addProduct(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description,
+            @RequestParam("price") double price,
+            @RequestParam("quantity") int quantity,
+            @RequestParam("category") String category,
+            @RequestParam("product_image") MultipartFile file
+            ) {
         try {
+            Product product = new Product();
+            product.setName(name);
+            product.setDescription(description);
+            product.setPrice(price);
+            product.setCategory(category);
+            product.setQuantity(quantity);
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOAD_DIR + file.getOriginalFilename());
+            Files.write(path, bytes);
+            product.setImagePath(path.toString());
+
             Product savedProduct = productService.createProduct(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Product Added Successfully !");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
