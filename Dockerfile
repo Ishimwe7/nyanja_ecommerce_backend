@@ -6,7 +6,8 @@ WORKDIR /app
 
 # Copy the local project files to the container
 COPY . .
-
+# Grant execution permission to the mvnw script
+RUN chmod +x ./mvnw
 # Build the project
 RUN ./mvnw clean package
 
