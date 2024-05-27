@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk-slim
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /nyanja_ecommerce_backend
 
 # Copy the local project files to the container
 COPY . .
